@@ -1,0 +1,14 @@
+{
+  "name": "@coquet/monorepo",
+  "private": true,
+  "version": "0.0.0-dev",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "prettier": "^2.2.1",
+    "prettier-plugin-organize-imports": "^1.1.1",
+    "prettier-plugin-pkg": "^0.8.0",
+    "typescript": "^4.2.2"
+  }
+}

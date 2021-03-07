@@ -1,24 +1,28 @@
-import {createGlobalStyle, createStyledComponent} from 'coquet'
+import {createGlobalStyle, css, styled} from 'coquet'
 
-const GlobalStyle = createGlobalStyle(`
+const boldAndRed = css`
+  font-weight: bold;
+  color: red;
+`
+
+const GlobalStyle = createGlobalStyle`
 h1 {
   color: green;
 }
-`)
+`
 
-const StyledP = createStyledComponent('p', [
-  `
-color: red;
-`,
-  () => 'font-weight: bold;',
-  {fontFamily: 'monospace'},
-])
+const StyledP = styled.p`
+  ${boldAndRed};
+  font-family: monospace;
+`
 
 const Demo: React.FC<{name: string}> = ({name, ...rest}) => {
   return <p {...rest}>Hello {name}</p>
 }
 
-const StyledDemo = createStyledComponent(Demo, `color: blue`)
+const StyledDemo = styled(Demo)`
+  color: blue;
+`
 
 export default function Home() {
   return (

@@ -1,14 +1,14 @@
 import {memo, useEffect} from 'react'
 import {createCompiler} from './compiler'
 import {useStyleSheet} from './CoquetProvider'
+import {css} from './css'
 import {generateComponentID} from './generateComponentID'
-import {flatten, Item} from './utils'
 
 const stylis = createCompiler()
 
-export function createGlobalStyle(style: Item) {
-  const css = flatten(style)
-  const compiledCSS = stylis.compile(css)
+export function createGlobalStyle(styles: TemplateStringsArray, ...interpolations: any[]) {
+  const style = css(styles, ...interpolations)
+  const compiledCSS = stylis.compile(style)
 
   const id = `coquet-global-${generateComponentID(compiledCSS)}`
 

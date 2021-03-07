@@ -29,8 +29,31 @@ export class GroupStyleSheet {
   length = 512
   sheet: StyleSheet
 
+  classNames = new Map<string, Set<string>>()
+
   constructor(sheet: StyleSheet) {
     this.sheet = sheet
+  }
+
+  hasNameForID(id: string, name: string): boolean {
+    return this.classNames.has(id) && Boolean(this.classNames.get(id)?.has(name))
+  }
+
+  registerName(id: string, name: string) {
+    getGroupNumber(name)
+    let classNames = this.classNames.get(id)
+    if (classNames) {
+      classNames.add(name)
+    } else {
+      classNames = new Set()
+      classNames.add(name)
+      this.classNames.set(id, classNames)
+    }
+  }
+
+  insertRules(id: string, name: string, rules: string | string[]): void {
+    this.registerName(id, name)
+    this.insertGroupRules(id, rules)
   }
 
   insertGroupRules(name: string, rules: string | string[]): void {
@@ -68,6 +91,15 @@ export class GroupStyleSheet {
     }
 
     return rules
+  }
+
+  clearRules(id: string) {
+    this.deleteGroupRules(id)
+    this.clearNames(id)
+  }
+
+  clearNames(id: string) {
+    this.classNames.get(id)?.clear()
   }
 
   deleteGroupRules(name: string): void {

@@ -8,8 +8,8 @@ export function createGlobalStyle(style: string) {
   const GlobalStyle: React.FC = () => {
     const groupSheet = useStyleSheet()
     useEffect(() => {
-      groupSheet.insertGroupRules(id, style)
-      return () => groupSheet.deleteGroupRules(id)
+      groupSheet.insertRules(id, id, style)
+      return () => groupSheet.clearRules(id)
     }, [])
 
     return null

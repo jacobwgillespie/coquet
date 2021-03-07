@@ -1,12 +1,15 @@
+import {v3} from 'murmurhash'
 import {GroupStyleSheet} from './sheet/groups'
 
 export class StyleClass {
   componentID: string
   rules: string[]
+  baseStyle?: StyleClass
 
-  constructor(componentID: string, rules: string[]) {
+  constructor(componentID: string, rules: string[], baseStyle?: StyleClass) {
     this.componentID = componentID
     this.rules = rules
+    this.baseStyle = baseStyle
   }
 
   get className() {
@@ -14,8 +17,18 @@ export class StyleClass {
   }
 
   inject(sheet: GroupStyleSheet) {
-    const wrappedRules = this.rules.map((rule) => `.${this.componentID} {${rule}}`)
-    sheet.insertGroupRules(this.componentID, wrappedRules)
+    const classNames: string[] = []
+
+    if (this.baseStyle) {
+      classNames.push(this.baseStyle.inject(sheet))
+    }
+
+    const css = this.rules.filter(Boolean).join('')
+    const name = `coquet-${v3(css).toString(36)}`
+    classNames.push(name)
+    const wrappedRules = `.${name} {${css}}`
+    sheet.insertRules(this.componentID, name, wrappedRules)
+    return classNames.join(' ')
   }
 
   clear(sheet: GroupStyleSheet) {

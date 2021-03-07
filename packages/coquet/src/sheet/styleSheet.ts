@@ -14,7 +14,8 @@ export class DOMStyleSheet implements StyleSheet {
       this.sheet.insertRule(rule, index)
       this.length += 1
       return true
-    } catch {
+    } catch (err) {
+      console.log(err)
       return false
     }
   }

@@ -6,12 +6,13 @@ h1 {
 }
 `)
 
-const StyledP = createStyledComponent(
-  'p',
+const StyledP = createStyledComponent('p', [
   `
 color: red;
 `,
-)
+  () => 'font-weight: bold;',
+  {fontFamily: 'monospace'},
+])
 
 const Demo: React.FC<{name: string}> = ({name, ...rest}) => {
   return <p {...rest}>Hello {name}</p>

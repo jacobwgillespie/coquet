@@ -8,17 +8,20 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "peerDependencies": {
-    "react": ">= 17.0.0 <18"
+    "react": ">= 17.0.0 <18",
+    "react-is": ">= 17.0.0 <18"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/node": "^14.14.31",
     "@types/react": "^17.0.2",
+    "@types/react-is": "^17.0.0",
     "@types/stylis": "^4.0.0",
     "builtin-modules": "^3.2.0",
     "murmurhash": "^2.0.0",
     "react": "^17.0.1",
+    "react-is": "^17.0.1",
     "rollup": "^2.40.0",
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-typescript2": "^0.30.0",

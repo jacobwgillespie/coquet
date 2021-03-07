@@ -1,14 +1,21 @@
 import {memo, useEffect} from 'react'
+import {createCompiler} from './compiler'
 import {useStyleSheet} from './CoquetProvider'
 import {generateComponentID} from './generateComponentID'
+import {flatten, Item} from './utils'
 
-export function createGlobalStyle(style: string) {
-  const id = `coquet-global-${generateComponentID(style)}`
+const stylis = createCompiler()
+
+export function createGlobalStyle(style: Item) {
+  const css = flatten(style)
+  const compiledCSS = stylis.compile(css)
+
+  const id = `coquet-global-${generateComponentID(compiledCSS)}`
 
   const GlobalStyle: React.FC = () => {
     const groupSheet = useStyleSheet()
     useEffect(() => {
-      groupSheet.insertRules(id, id, style)
+      groupSheet.insertRules(id, id, compiledCSS)
       return () => groupSheet.clearRules(id)
     }, [])
 

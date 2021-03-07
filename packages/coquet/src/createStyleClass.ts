@@ -4,6 +4,12 @@ import {GroupStyleSheet} from './sheet/groups'
 import {flatten, Item} from './utils'
 const stylis = createCompiler()
 
+const StyleClassSymbol = Symbol('CoquetClassName')
+
+export function isClassName(name: string): boolean {
+  return Boolean((name as any)[StyleClassSymbol])
+}
+
 export class StyleClass {
   componentID: string
   rules: Item[]
@@ -19,7 +25,7 @@ export class StyleClass {
     return this.componentID
   }
 
-  inject(sheet: GroupStyleSheet) {
+  inject(sheet: GroupStyleSheet): string {
     const classNames: string[] = []
 
     if (this.baseStyle) {
@@ -38,7 +44,7 @@ export class StyleClass {
       sheet.insertRules(this.componentID, name, wrappedRules)
     }
     classNames.push(name)
-    return classNames.join(' ')
+    return Object.assign(classNames.join(' '), {[StyleClassSymbol]: true})
   }
 
   clear(sheet: GroupStyleSheet) {

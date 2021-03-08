@@ -1,8 +1,8 @@
-import {v3} from 'murmurhash'
 import {forwardRef} from 'react'
 import {useStyleSheet} from './CoquetProvider'
 import {StyleClass} from './createStyleClass'
 import {cssEscape, generateDisplayName, getComponentName, Item} from './utils'
+import {hash} from './utils/hash'
 
 const identifiers = new Map<string, number>()
 
@@ -10,8 +10,7 @@ function generateID(displayName?: string, parentID?: string) {
   const name = displayName ? cssEscape(displayName) : 'coquet'
   const identifier = (identifiers.get(name) || 0) + 1
   identifiers.set(name, identifier)
-  const hash = v3(`${name}-${identifier}`).toString(36)
-  const id = `${name}-${hash}`
+  const id = `${name}-${hash(`${name}-${identifier}`)}`
   return parentID ? `${parentID}-${id}` : `coquet-${id}`
 }
 

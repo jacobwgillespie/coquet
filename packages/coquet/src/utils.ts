@@ -1,6 +1,6 @@
 import {typeOf} from 'react-is'
 import {GroupStyleSheet} from './sheet/groups'
-import {unitless} from './unitless'
+import {unitless} from './utils/unitless'
 
 // Taken from https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/shared/dangerousStyleValue.js
 export function addUnitIfNeeded(name: string, value: any): any {

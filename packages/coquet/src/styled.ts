@@ -1,6 +1,6 @@
 import {createStyledComponent} from './createStyledComponent'
 import {css} from './css'
-import {domElements} from './domElements'
+import {domElements} from './utils/domElements'
 
 type DomElements = typeof domElements[number]
 

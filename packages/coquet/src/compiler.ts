@@ -1,4 +1,5 @@
-import {compile, Element, RULESET, serialize, stringify} from 'stylis'
+import {compile, Element, middleware, RULESET, rulesheet, serialize, stringify} from 'stylis'
+import {hash} from './utils/hash'
 
 function cloneElement(element: Element, withChildren = true): Element {
   const clonedElement = {...element}
@@ -26,10 +27,35 @@ function atomize(element: Element): Element[] {
 export function createCompiler() {
   function compileCSS(css: string, selector = '', prefix = '', _id = '&') {
     const compiled = compile(prefix || selector ? `${prefix} ${selector} { ${css} }` : css)
-    const atomized = compiled.flatMap((el) => atomize(el))
-    console.log(serialize(atomized, stringify))
-    return serialize(atomized, stringify)
+    return serialize(compiled, stringify)
   }
 
   return {compile: compileCSS}
+}
+
+const PLACEHOLDER_CLASSNAME = '\x1b'
+const PLACEHOLDER_REGEXP = /\x1b/g
+
+interface CompiledRule {
+  className: string
+  rule: string
+}
+
+export function compileAtomic(css: string): CompiledRule[] {
+  const compiled = compile(`.${PLACEHOLDER_CLASSNAME} { ${css} }`)
+
+  const atomized = compiled.flatMap((el) => atomize(el))
+
+  const rules: CompiledRule[] = []
+  serialize(
+    atomized,
+    middleware([
+      stringify,
+      rulesheet((rule) => {
+        const className = `c-${hash(rule)}`
+        rules.push({className, rule: rule.replace(PLACEHOLDER_REGEXP, className)})
+      }),
+    ]),
+  )
+  return rules
 }

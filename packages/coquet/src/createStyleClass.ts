@@ -1,8 +1,7 @@
-import {v3} from 'murmurhash'
-import {createCompiler} from './compiler'
+import {compileAtomic} from './compiler'
 import {GroupStyleSheet} from './sheet/groups'
 import {flatten, Item} from './utils'
-const stylis = createCompiler()
+import {hash} from './utils/hash'
 
 const StyleClassSymbol = Symbol('CoquetClassName')
 
@@ -38,10 +37,14 @@ export class StyleClass {
       css += flatten(rule, sheet)
     }
 
-    const name = `coquet-${v3(css).toString(36)}`
-    if (!sheet.hasNameForID(this.componentID, name)) {
-      const wrappedRules = stylis.compile(css, `.${name}`, undefined, this.componentID)
-      sheet.insertRules(this.componentID, name, wrappedRules)
+    const name = `coquet-${hash(css)}`
+    const rules = compileAtomic(css)
+    // const wrappedRules = stylis.compile(css, `.${name}`, undefined, this.componentID)
+    for (const rule of rules) {
+      if (!sheet.hasNameForID(this.componentID, rule.className)) {
+        classNames.push(rule.className)
+        sheet.insertRules(this.componentID, rule.className, rule.rule)
+      }
     }
     classNames.push(name)
     return Object.assign(classNames.join(' '), {[StyleClassSymbol]: true})

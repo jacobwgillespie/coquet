@@ -14,18 +14,6 @@ function getBeforeElement(siblings: HTMLElement[], parent: HTMLElement) {
   return siblings.length === 0 ? parent.firstChild : siblings[siblings.length - 1].nextSibling
 }
 
-// export interface Sheet {
-//   key: string
-//   parent: HTMLElement
-//   nonce?: string
-//   ruleCount: number
-//   styleElements: HTMLStyleElement[]
-// }
-
-// export function createSheet(): Sheet {
-
-// }
-
 export interface SheetOptions {
   key: string
   parent: HTMLElement

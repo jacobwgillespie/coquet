@@ -1,9 +1,4 @@
-import {createGlobalStyle, css, styled} from 'coquet'
-
-const boldAndRed = css`
-  font-weight: bold;
-  color: red;
-`
+import {createGlobalStyle, styled} from 'coquet'
 
 const GlobalStyle = createGlobalStyle`
 h1 {
@@ -12,8 +7,8 @@ h1 {
 `
 
 const StyledP = styled.p`
-  ${boldAndRed};
-  font-family: monospace;
+  color: red;
+  color: blue;
 `
 
 const Demo: React.FC<{name: string}> = ({name, ...rest}) => {
@@ -22,18 +17,7 @@ const Demo: React.FC<{name: string}> = ({name, ...rest}) => {
 
 const StyledDemo = styled(Demo)`
   color: blue;
-  font-family: monospace;
-  font-weight: bold;
-  color: green;
-
-  &:hover {
-    color: yellow;
-  }
-
-  @media (min-width: 600px) {
-    color: blue;
-    background: yellow;
-  }
+  color: red;
 `
 
 export default function Home() {

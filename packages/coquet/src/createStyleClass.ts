@@ -42,9 +42,9 @@ export class StyleClass {
     // const wrappedRules = stylis.compile(css, `.${name}`, undefined, this.componentID)
     for (const rule of rules) {
       if (!sheet.hasNameForID(this.componentID, rule.className)) {
-        classNames.push(rule.className)
         sheet.insertRules(this.componentID, rule.className, rule.rule)
       }
+      classNames.push(rule.className)
     }
     classNames.push(name)
     return Object.assign(classNames.join(' '), {[StyleClassSymbol]: true})

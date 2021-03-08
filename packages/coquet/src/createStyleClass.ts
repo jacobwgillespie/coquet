@@ -1,4 +1,4 @@
-import {compileAtomic} from './compiler'
+import {compileCSS} from './compiler'
 import {GroupStyleSheet} from './sheet/groups'
 import {flatten, Item} from './utils'
 import {hash} from './utils/hash'
@@ -38,7 +38,7 @@ export class StyleClass {
     }
 
     const name = `coquet-${hash(css)}`
-    const rules = compileAtomic(css)
+    const rules = compileCSS(css)
     // const wrappedRules = stylis.compile(css, `.${name}`, undefined, this.componentID)
     for (const rule of rules) {
       if (!sheet.hasNameForID(this.componentID, rule.className)) {

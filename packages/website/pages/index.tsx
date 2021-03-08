@@ -18,6 +18,10 @@ const Demo: React.FC<{name: string}> = ({name, ...rest}) => {
 const StyledDemo = styled(Demo)`
   color: blue;
   color: red;
+
+  & + & {
+    color: green;
+  }
 `
 
 export default function Home() {

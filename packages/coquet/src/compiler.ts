@@ -65,6 +65,25 @@ interface CompiledRule {
   rule: string
 }
 
+export function compileCSS(css: string) {
+  const compiled = compile(`.${PLACEHOLDER_CLASSNAME} { ${css.replace(COMMENT_REGEX, '')} }`)
+
+  const rules: CompiledRule[] = []
+  serialize(
+    compiled,
+    middleware([
+      prefixer,
+      selfReferenceReplacementPlugin,
+      stringify,
+      rulesheet((rule) => {
+        const className = `c-${hash(rule)}`
+        rules.push({className, rule: rule.replace(PLACEHOLDER_REGEXP, className)})
+      }),
+    ]),
+  )
+  return rules
+}
+
 export function compileAtomic(css: string): CompiledRule[] {
   const compiled = compile(`.${PLACEHOLDER_CLASSNAME} { ${css.replace(COMMENT_REGEX, '')} }`)
 

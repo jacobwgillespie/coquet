@@ -2,7 +2,7 @@ import {createGlobalStyle, styled} from 'coquet'
 
 const GlobalStyle = createGlobalStyle`
 h1 {
-  color: green;
+  color: ${(props) => props.color ?? 'green'};
 }
 `
 
@@ -28,7 +28,7 @@ const StyledDemo = styled(Demo)`
 export default function Home() {
   return (
     <div>
-      <GlobalStyle />
+      <GlobalStyle color="red" />
       <h1>Hello World</h1>
       <StyledP>Hello world</StyledP>
 

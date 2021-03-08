@@ -1,7 +1,7 @@
 import {memo, useEffect} from 'react'
 import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
-import {hash} from './utils'
+import {flatten, hash} from './utils'
 import {createCompiler} from './utils/compiler'
 
 const stylis = createCompiler()
@@ -9,15 +9,17 @@ const stylis = createCompiler()
 export function createGlobalStyle(
   styles: TemplateStringsArray,
   ...interpolations: any[]
-): React.NamedExoticComponent<{}> {
-  const style = css(styles, ...interpolations)
-  const compiledCSS = stylis.compile(Array.isArray(style) ? style.join('') : style)
+): React.NamedExoticComponent<any> {
+  const rules = css(styles, ...interpolations)
 
-  const id = `coquet-global-${hash(compiledCSS)}`
+  const id = `coquet-global-${hash(JSON.stringify(rules))}`
 
-  const GlobalStyle: React.FC = () => {
+  const GlobalStyle: React.FC = (props) => {
     const groupSheet = useStyleSheet()
     useEffect(() => {
+      const style = flatten(rules, groupSheet, props)
+      const flatCSS = `${Array.isArray(style) ? style.join('') : style}`
+      const compiledCSS = stylis.compile(flatCSS)
       groupSheet.insertRules(id, id, compiledCSS)
       return () => groupSheet.clearRules(id)
     }, [])

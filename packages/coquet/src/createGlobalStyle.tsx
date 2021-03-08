@@ -11,7 +11,7 @@ export function createGlobalStyle(
   ...interpolations: any[]
 ): React.NamedExoticComponent<{}> {
   const style = css(styles, ...interpolations)
-  const compiledCSS = stylis.compile(style)
+  const compiledCSS = stylis.compile(Array.isArray(style) ? style.join('') : style)
 
   const id = `coquet-global-${hash(compiledCSS)}`
 

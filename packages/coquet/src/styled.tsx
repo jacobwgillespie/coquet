@@ -219,7 +219,7 @@ function createStyledComponent<T extends React.ElementType>(component: T, styles
   const Component = component as any
   const WrappedStyledComponent = forwardRef<T, React.ComponentPropsWithoutRef<T>>((props, ref) => {
     const groupSheet = useStyleSheet()
-    const className = styleClass.inject(groupSheet)
+    const className = styleClass.inject(groupSheet, props)
     return <Component {...props} className={`${componentID} ${className}`} ref={ref} />
   })
 

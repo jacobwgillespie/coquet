@@ -1,6 +1,7 @@
 import {v3} from 'murmurhash'
 import {typeOf} from 'react-is'
 import {GroupStyleSheet} from '../sheet/groups'
+import {Interpolation} from '../types'
 import {unitless} from './unitless'
 
 export function hash(string: string) {
@@ -95,8 +96,8 @@ export function isStyledComponent(value: unknown) {
   return value && typeof (value as any).coquetComponentID === 'string'
 }
 
-export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): (string | Function)[] {
-  const rules: (string | Function)[] = []
+export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): Interpolation {
+  const rules: Interpolation[] = []
 
   for (const key in obj) {
     const value = obj[key]
@@ -104,9 +105,9 @@ export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): (st
     if (!obj.hasOwnProperty(key) || (!value && value !== 0)) continue
 
     if (isPlainObject(value)) {
-      rules.push(...objectToCSS(value, key))
+      rules.push(...(objectToCSS(value, key) as any))
     } else if (isFunction(value)) {
-      rules.push(`${hyphenateStyleName(key)}:`, value, ';')
+      rules.push(`${hyphenateStyleName(key)}:`, value as any, ';')
     } else {
       rules.push(`${hyphenateStyleName(key)}: ${addUnitIfNeeded(key, value)};`)
     }
@@ -117,11 +118,11 @@ export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): (st
 
 export type Item = string | number | Function | object | Item[]
 
-export function flattenInner(item: Item, sheet?: GroupStyleSheet): string | Function | (string | Function)[] {
+export function flatten(item: Item, sheet?: GroupStyleSheet, ctx?: object): Interpolation {
   if (Array.isArray(item)) {
-    const rules: (string | Function)[] = []
+    const rules: Interpolation[] = []
     for (const i of item) {
-      const result = flattenInner(i, sheet)
+      const result = flatten(i, sheet, ctx)
       if (result === '') continue
       else if (Array.isArray(result)) rules.push(...result)
       else rules.push(result)
@@ -137,9 +138,17 @@ export function flattenInner(item: Item, sheet?: GroupStyleSheet): string | Func
     return `.${(item as any).coquetComponentID}`
   }
 
-  if (isFunction(item) && isStatelessFunction(item)) {
-    const result = item()
-    return flattenInner(result, sheet)
+  if (isFunction(item)) {
+    if (isStatelessFunction(item) && ctx) {
+      let result
+      try {
+        result = item(ctx)
+      } catch (err) {
+        console.log(err)
+        return ''
+      }
+      return flatten(result, sheet, ctx)
+    } else return item as any // TODO: type this
   }
 
   if (isPlainObject(item)) {
@@ -147,16 +156,6 @@ export function flattenInner(item: Item, sheet?: GroupStyleSheet): string | Func
   }
 
   return item.toString()
-}
-
-export function flatten(item: Item, sheet?: GroupStyleSheet): string {
-  const result = flattenInner(item, sheet)
-
-  return Array.isArray(result)
-    ? result.map((i) => (isFunction(i) ? i() : i)).join('')
-    : isFunction(result)
-    ? result()
-    : result
 }
 
 export function namedFunction<T extends (...args: any) => any>(name: string, fn: T): T {

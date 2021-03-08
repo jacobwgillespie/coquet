@@ -19,17 +19,18 @@ export class StyleClass {
     this.baseStyle = baseStyle
   }
 
-  inject(sheet: GroupStyleSheet): string {
+  inject(sheet: GroupStyleSheet, ctx: object): string {
     const classNames: string[] = []
 
     if (this.baseStyle) {
-      classNames.push(this.baseStyle.inject(sheet))
+      classNames.push(this.baseStyle.inject(sheet, ctx))
     }
 
     let css = ''
 
     for (const rule of this.rules) {
-      css += flatten(rule, sheet)
+      const result = flatten(rule, sheet, ctx)
+      css += Array.isArray(result) ? result.join('') : result
     }
 
     const name = `coquet-${hash(css)}`

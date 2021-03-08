@@ -16,8 +16,9 @@ const Demo: React.FC<{name: string}> = ({name, ...rest}) => {
 }
 
 const StyledDemo = styled(Demo)`
-  color: blue;
   color: red;
+
+  ${(props) => (props.name === 'world' ? 'color: purple;' : '')};
 
   & + & {
     color: green;

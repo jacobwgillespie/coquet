@@ -1,12 +1,19 @@
 {
   "name": "coquet",
   "version": "0.0.1",
-  "description": "Stylish CSS-in-JS for React",
+  "description": "Lightweight CSS-in-JS for React",
   "repository": "https://github.com/jacobwgillespie/coquet.git",
   "author": "Jacob Gillespie",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
   "peerDependencies": {
     "react": ">= 17.0.0 <18",
     "react-is": ">= 17.0.0 <18"

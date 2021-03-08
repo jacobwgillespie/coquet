@@ -1,5 +1,5 @@
 import {compile, Element, middleware, Middleware, prefixer, RULESET, rulesheet, serialize, stringify} from 'stylis'
-import {hash} from './utils/hash'
+import {hash} from '.'
 
 function cloneElement(element: Element, withChildren = true): Element {
   const clonedElement = {...element}

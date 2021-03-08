@@ -63,6 +63,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/highlight", "npm:7.13.8"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:7.12.13", {
+          "packageLocation": "./.yarn/cache/@babel-code-frame-npm-7.12.13-fb5ba5a992-471532bb7c.zip/node_modules/@babel/code-frame/",
+          "packageDependencies": [
+            ["@babel/code-frame", "npm:7.12.13"],
+            ["@babel/highlight", "npm:7.13.8"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["@babel/helper-validator-identifier", [
@@ -1165,6 +1173,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:17.0.1"],
             ["react-is", "npm:17.0.1"],
             ["rollup", "npm:2.40.0"],
+            ["rollup-plugin-dts", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:3.0.1"],
             ["rollup-plugin-node-externals", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:2.2.0"],
             ["rollup-plugin-typescript2", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:0.30.0"],
             ["stylis", "npm:4.0.7"],
@@ -1192,6 +1201,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:17.0.1"],
             ["react-is", "npm:17.0.1"],
             ["rollup", "npm:2.40.0"],
+            ["rollup-plugin-dts", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:3.0.1"],
             ["rollup-plugin-node-externals", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:2.2.0"],
             ["rollup-plugin-typescript2", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:0.30.0"],
             ["stylis", "npm:4.0.7"],
@@ -3380,6 +3390,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["rollup", "npm:2.40.0"],
             ["fsevents", "patch:fsevents@npm%3A2.3.2#builtin<compat/fsevents>::version=2.3.2&hash=11e9ea"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["rollup-plugin-dts", [
+        ["npm:3.0.1", {
+          "packageLocation": "./.yarn/cache/rollup-plugin-dts-npm-3.0.1-0bda2b8aa3-742ac01358.zip/node_modules/rollup-plugin-dts/",
+          "packageDependencies": [
+            ["rollup-plugin-dts", "npm:3.0.1"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:3.0.1", {
+          "packageLocation": "./.yarn/$$virtual/rollup-plugin-dts-virtual-526cee6893/0/cache/rollup-plugin-dts-npm-3.0.1-0bda2b8aa3-742ac01358.zip/node_modules/rollup-plugin-dts/",
+          "packageDependencies": [
+            ["rollup-plugin-dts", "virtual:6aad1c2d00117aef5c7d0d7b60620aeb88e113854218c188d598f9c781d3d19d556fcbf93a466664cb26b29a07e5c922e46f74470c556a6ba3be02c1aa7c46da#npm:3.0.1"],
+            ["@babel/code-frame", "npm:7.12.13"],
+            ["@types/rollup", null],
+            ["@types/typescript", null],
+            ["magic-string", "npm:0.25.7"],
+            ["rollup", "npm:2.40.0"],
+            ["typescript", "patch:typescript@npm%3A4.2.2#builtin<compat/typescript>::version=4.2.2&hash=a45b0e"]
+          ],
+          "packagePeers": [
+            "@types/rollup",
+            "@types/typescript",
+            "rollup",
+            "typescript"
           ],
           "linkType": "HARD",
         }]

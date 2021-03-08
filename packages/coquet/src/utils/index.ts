@@ -1,11 +1,14 @@
+import {v3} from 'murmurhash'
 import {typeOf} from 'react-is'
-import {GroupStyleSheet} from './sheet/groups'
-import {unitless} from './utils/unitless'
+import {GroupStyleSheet} from '../sheet/groups'
+import {unitless} from './unitless'
+
+export function hash(string: string) {
+  return v3(string).toString(36)
+}
 
 // Taken from https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/shared/dangerousStyleValue.js
 export function addUnitIfNeeded(name: string, value: any): any {
-  // https://github.com/amilajack/eslint-plugin-flowtype-errors/issues/133
-  // $FlowFixMe
   if (value == null || typeof value === 'boolean' || value === '') {
     return ''
   }
@@ -154,4 +157,13 @@ export function flatten(item: Item, sheet?: GroupStyleSheet): string {
     : isFunction(result)
     ? result()
     : result
+}
+
+export function namedFunction<T extends (...args: any) => any>(name: string, fn: T): T {
+  const obj = {
+    [name](...args: any[]) {
+      return fn(...args)
+    },
+  }
+  return obj[name] as T
 }

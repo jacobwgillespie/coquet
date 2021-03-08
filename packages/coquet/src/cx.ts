@@ -1,5 +1,20 @@
-export type ClassName = string | undefined | null | false | 0 | void
+export type ClassValue = string | undefined | null | false | void | 0 | {[id: string]: ClassValue} | ClassValue[]
 
-export default function cx(...classNames: ClassName[]): string {
-  return classNames.filter(Boolean).join(' ')
+function isTruthy(value: unknown): value is Exclude<ClassValue, undefined | null | false | void | 0> {
+  return Boolean(value)
+}
+
+export function cx(...classNames: ClassValue[]): string {
+  return classNames
+    .filter(isTruthy)
+    .map((className) => {
+      if (Array.isArray(className)) return cx(...className)
+      if (typeof className === 'object')
+        return Object.keys(className)
+          .map((key) => (className[key] ? key : false))
+          .filter(isTruthy)
+          .join(' ')
+      return className
+    })
+    .join(' ')
 }

@@ -23,6 +23,7 @@
     "react": "^17.0.1",
     "react-is": "^17.0.1",
     "rollup": "^2.40.0",
+    "rollup-plugin-dts": "^3.0.1",
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-typescript2": "^0.30.0",
     "stylis": "^4.0.7",

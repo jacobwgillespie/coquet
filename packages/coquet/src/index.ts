@@ -1,6 +1,4 @@
 export * from './createGlobalStyle'
-export * from './createStyledComponent'
 export * from './css'
 export * from './cx'
-export * from './sheet'
 export * from './styled'

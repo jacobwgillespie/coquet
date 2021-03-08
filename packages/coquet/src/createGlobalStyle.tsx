@@ -1,12 +1,15 @@
 import {memo, useEffect} from 'react'
-import {createCompiler} from './compiler'
 import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
-import {hash} from './utils/hash'
+import {hash} from './utils'
+import {createCompiler} from './utils/compiler'
 
 const stylis = createCompiler()
 
-export function createGlobalStyle(styles: TemplateStringsArray, ...interpolations: any[]) {
+export function createGlobalStyle(
+  styles: TemplateStringsArray,
+  ...interpolations: any[]
+): React.NamedExoticComponent<{}> {
   const style = css(styles, ...interpolations)
   const compiledCSS = stylis.compile(style)
 

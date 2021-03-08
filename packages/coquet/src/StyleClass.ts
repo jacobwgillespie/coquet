@@ -1,7 +1,6 @@
-import {compileCSS} from './compiler'
 import {GroupStyleSheet} from './sheet/groups'
-import {flatten, Item} from './utils'
-import {hash} from './utils/hash'
+import {flatten, hash, Item} from './utils'
+import {compileCSS} from './utils/compiler'
 
 const StyleClassSymbol = Symbol('CoquetClassName')
 
@@ -18,10 +17,6 @@ export class StyleClass {
     this.componentID = componentID
     this.rules = rules
     this.baseStyle = baseStyle
-  }
-
-  get className() {
-    return this.componentID
   }
 
   inject(sheet: GroupStyleSheet): string {

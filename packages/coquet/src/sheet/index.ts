@@ -1,5 +1,3 @@
-import {compile, middleware, rulesheet, serialize, stringify} from 'stylis'
-
 function getStyleSheetFromStyleElement(element: HTMLStyleElement) {
   if (element.sheet) return element.sheet
   for (let i = 0; i < document.styleSheets.length; i++) {
@@ -75,12 +73,4 @@ export class Sheet {
       this.styleElements.push(styleElement)
     }
   }
-}
-
-export const isBrowser = typeof document !== 'undefined'
-
-export function insertBrowser(selector: string, styles: string, sheet: Sheet) {
-  const serializer = middleware([stringify, rulesheet((rule) => sheet.insertRule(rule))])
-  const stylis = (styles: string) => serialize(compile(styles), serializer)
-  stylis(selector ? `${selector}{${styles}}` : styles)
 }

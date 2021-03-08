@@ -14,6 +14,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/code-frame@npm:^7.12.13":
+  version: 7.12.13
+  resolution: "@babel/code-frame@npm:7.12.13"
+  dependencies:
+    "@babel/highlight": ^7.12.13
+  checksum: 471532bb7cb4a300bd1a3201e75e7c0c83ebfb4e0e6610fdb53270521505d7efe0961258de61e7b1970ef3092a97ed675248ee1a44597912a1f61f903d85ef41
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-identifier@npm:^7.12.11":
   version: 7.12.11
   resolution: "@babel/helper-validator-identifier@npm:7.12.11"
@@ -21,7 +30,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/highlight@npm:^7.10.4":
+"@babel/highlight@npm:^7.10.4, @babel/highlight@npm:^7.12.13":
   version: 7.13.8
   resolution: "@babel/highlight@npm:7.13.8"
   dependencies:
@@ -923,6 +932,7 @@ __metadata:
     react: ^17.0.1
     react-is: ^17.0.1
     rollup: ^2.40.0
+    rollup-plugin-dts: ^3.0.1
     rollup-plugin-node-externals: ^2.2.0
     rollup-plugin-typescript2: ^0.30.0
     stylis: ^4.0.7
@@ -2827,6 +2837,22 @@ fsevents@~2.3.1:
     hash-base: ^3.0.0
     inherits: ^2.0.1
   checksum: e0370fbe779b1f15d74c3e7dffc0ce40b57b845fc7e431fab8a571958d5fd9c91eb0038a252604600e20786d117badea0cc4cf8816b8a6be6b9166b565ad6797
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-dts@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "rollup-plugin-dts@npm:3.0.1"
+  dependencies:
+    "@babel/code-frame": ^7.12.13
+    magic-string: ^0.25.7
+  peerDependencies:
+    rollup: ^2.40.0
+    typescript: ^4.2.3
+  dependenciesMeta:
+    "@babel/code-frame":
+      optional: true
+  checksum: 742ac01358bfa730435247da72f6925541184534b53d9407063f5ad4e2ce8254f71f83c1617a1768b0bab90e650d4a994468a4057d5e7224deea8cbf43eb2ba6
   languageName: node
   linkType: hard
 

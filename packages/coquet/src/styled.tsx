@@ -4,14 +4,59 @@ import {css} from './css'
 import {StyleClass} from './StyleClass'
 import {cssEscape, generateDisplayName, getComponentName, hash, Item, namedFunction} from './utils'
 
-type StyledFn = (element: React.ElementType) => (styles: TemplateStringsArray, ...interpolations: any[]) => any
-type IntrinsicStyledFn = {
-  [K in keyof JSX.IntrinsicElements]: (styles: TemplateStringsArray, ...interpolations: any[]) => any
+type Interpolation<Props> =
+  | string
+  | ((props: Props) => Interpolation<Props>)
+  | StyledComponentInterpolation
+  | Interpolation<Props>[]
+
+type StyledComponentInterpolation =
+  | Pick<StyledComponent<any, any>, keyof StyledComponent<any, any>>
+  | Pick<StyledComponent<any>, keyof StyledComponent<any, any>>
+
+export type PropsOf<
+  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
+> = JSX.LibraryManagedAttributes<C, React.ComponentProps<C>>
+
+export interface StyledComponent<ComponentProps extends {}, JSXProps extends {} = {}>
+  extends React.FC<ComponentProps & JSXProps> {
+  as<Component extends React.ComponentType>(component: Component): StyledComponent<PropsOf<Component>>
+  as<Tag extends keyof JSX.IntrinsicElements>(tag: Tag): StyledComponent<JSX.IntrinsicElements[Tag]>
 }
 
-interface Styled extends StyledFn, IntrinsicStyledFn {}
+interface BaseCreateStyled {
+  <C extends React.ComponentClass<React.ComponentProps<C>>>(component: C): CreateStyledComponent<
+    PropsOf<C>,
+    {ref?: React.Ref<InstanceType<C>>}
+  >
 
-const styler = (element: React.ElementType) => {
+  <C extends React.ComponentType<React.ComponentProps<C>>>(component: C): CreateStyledComponent<PropsOf<C>>
+
+  <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): CreateStyledComponent<
+    {as?: React.ElementType},
+    JSX.IntrinsicElements[Tag]
+  >
+}
+
+export interface CreateStyledComponent<ComponentProps extends {}, JSXProps extends {} = {}> {
+  (template: TemplateStringsArray, ...styles: Interpolation<ComponentProps>[]): StyledComponent<
+    ComponentProps,
+    JSXProps
+  >
+
+  <AdditionalProps extends {}>(
+    template: TemplateStringsArray,
+    ...styles: Interpolation<ComponentProps & AdditionalProps>[]
+  ): StyledComponent<ComponentProps, JSXProps>
+}
+
+export type StyledTags = {
+  [Tag in keyof JSX.IntrinsicElements]: CreateStyledComponent<{as?: React.ElementType}, JSX.IntrinsicElements[Tag]>
+}
+
+interface Styled extends BaseCreateStyled, StyledTags {}
+
+const styler: BaseCreateStyled = (element: React.ElementType) => {
   return namedFunction(generateDisplayName(element), (styles: TemplateStringsArray, ...interpolations: any[]) => {
     const builtCSS = css(styles, ...interpolations)
     return createStyledComponent(element, builtCSS)
@@ -223,7 +268,12 @@ function createStyledComponent<T extends React.ElementType>(component: T, styles
     return <Component {...props} className={`${componentID} ${className}`} ref={ref} />
   })
 
-  WrappedStyledComponent.displayName = displayName
+  const StyledComponent = Object.assign(WrappedStyledComponent, {
+    displayName,
+    as<T extends React.ElementType>(component: T) {
+      return createStyledComponent(component, styles)
+    },
+  })
 
-  return WrappedStyledComponent
+  return StyledComponent
 }

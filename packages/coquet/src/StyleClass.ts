@@ -4,7 +4,7 @@ import {compileCSS} from './utils/compiler'
 
 const StyleClassSymbol = Symbol('CoquetClassName')
 
-export function isClassName(name: string): boolean {
+export function isClassName(name: unknown): name is string {
   return Boolean((name as any)[StyleClassSymbol])
 }
 

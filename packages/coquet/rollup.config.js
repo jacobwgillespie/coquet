@@ -13,13 +13,19 @@ export default [
       externals({devDeps: false}),
       nodeResolve(),
       commonjs(),
-      ts({tsconfigOverride: {compilerOptions: {module: 'esnext'}}}),
+      ts({
+        tsconfigOverride: {
+          compilerOptions: {module: 'esnext'},
+        },
+        check: false,
+        typescript: require('typescript'),
+      }),
       terser(),
     ],
   },
   {
     input: './src/index.ts',
     output: {file: 'dist/index.d.ts', format: 'es'},
-    plugins: [dts()],
+    plugins: [dts({respectExternal: true})],
   },
 ]

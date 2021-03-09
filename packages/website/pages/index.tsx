@@ -1,6 +1,6 @@
 import {createGlobalStyle, styled} from 'coquet'
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<{color: string}>`
 h1 {
   color: ${(props) => props.color ?? 'green'};
 }

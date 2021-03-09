@@ -1,10 +1,14 @@
 {
   "name": "@coquet/monorepo",
-  "private": true,
   "version": "0.0.0-dev",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "fmt": "prettier --write .",
+    "lint": "prettier --check ."
+  },
   "devDependencies": {
     "prettier": "^2.2.1",
     "prettier-plugin-organize-imports": "^1.1.1",

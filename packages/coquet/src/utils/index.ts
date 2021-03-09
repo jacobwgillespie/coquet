@@ -1,12 +1,9 @@
-import {v3} from 'murmurhash'
 import {typeOf} from 'react-is'
 import {GroupStyleSheet} from '../sheet/groups'
 import {Interpolation} from '../types'
 import {unitless} from './unitless'
 
-export function hash(string: string) {
-  return v3(string).toString(36)
-}
+export {hash} from './hash'
 
 // Taken from https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/shared/dangerousStyleValue.js
 export function addUnitIfNeeded(name: string, value: any): any {

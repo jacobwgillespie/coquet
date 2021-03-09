@@ -11,8 +11,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w"
+    "build": "rollup -c",
+    "clean": "rm -rf dist",
+    "postpack": "yarn run clean",
+    "prepack": "yarn run build",
+    "type-check": "tsc --noEmit",
+    "watch": "rollup -c -w"
   },
   "peerDependencies": {
     "react": ">= 17.0.0 <18",
@@ -32,6 +36,7 @@
     "rollup": "^2.40.0",
     "rollup-plugin-dts": "^3.0.1",
     "rollup-plugin-node-externals": "^2.2.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "stylis": "^4.0.7",
     "tslib": "^2.1.0",

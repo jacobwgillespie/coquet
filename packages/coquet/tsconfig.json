@@ -7,8 +7,8 @@
     // "allowJs": true,
     // "checkJs": true,
     "jsx": "react-jsx",
-    "declaration": true,
-    "declarationMap": true,
+    // "declaration": true,
+    // "declarationMap": true,
     "sourceMap": true,
     // "outFile": "./",
     "outDir": "dist",
@@ -58,5 +58,6 @@
 
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": ["src"]
 }

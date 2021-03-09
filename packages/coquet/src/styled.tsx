@@ -2,13 +2,18 @@ import {forwardRef} from 'react'
 import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
 import {StyleClass} from './StyleClass'
+import {Interpolation as OtherInterp} from './types'
 import {cssEscape, generateDisplayName, getComponentName, hash, Item, namedFunction} from './utils'
+
+export type NoInfer<A extends any> = [A][A extends any ? 0 : never]
 
 type Interpolation<Props> =
   | string
-  | ((props: Props) => Interpolation<Props>)
+  | false
+  | ((props: NoInfer<Props>) => Interpolation<Props>)
   | StyledComponentInterpolation
   | Interpolation<Props>[]
+  | OtherInterp[]
 
 type StyledComponentInterpolation =
   | Pick<StyledComponent<any, any>, keyof StyledComponent<any, any>>
@@ -20,7 +25,14 @@ export type PropsOf<
 
 export interface StyledComponent<ComponentProps extends {}, JSXProps extends {} = {}>
   extends React.FC<ComponentProps & JSXProps> {
-  as<Component extends React.ComponentType>(component: Component): StyledComponent<PropsOf<Component>>
+  as<Component extends React.ComponentClass<React.ComponentProps<Component>>>(
+    component: Component,
+  ): StyledComponent<PropsOf<Component>, {ref?: React.Ref<InstanceType<Component>>}>
+
+  as<Component extends React.ComponentType<React.ComponentProps<Component>>>(
+    component: Component,
+  ): StyledComponent<PropsOf<Component>>
+
   as<Tag extends keyof JSX.IntrinsicElements>(tag: Tag): StyledComponent<JSX.IntrinsicElements[Tag]>
 }
 
@@ -32,26 +44,23 @@ interface BaseCreateStyled {
 
   <C extends React.ComponentType<React.ComponentProps<C>>>(component: C): CreateStyledComponent<PropsOf<C>>
 
-  <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): CreateStyledComponent<
-    {as?: React.ElementType},
-    JSX.IntrinsicElements[Tag]
-  >
+  <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): CreateStyledComponent<{}, JSX.IntrinsicElements[Tag]>
 }
 
 export interface CreateStyledComponent<ComponentProps extends {}, JSXProps extends {} = {}> {
+  <AdditionalProps extends {}>(
+    template: TemplateStringsArray,
+    ...styles: Interpolation<ComponentProps & AdditionalProps>[]
+  ): StyledComponent<ComponentProps & AdditionalProps, JSXProps>
+
   (template: TemplateStringsArray, ...styles: Interpolation<ComponentProps>[]): StyledComponent<
     ComponentProps,
     JSXProps
   >
-
-  <AdditionalProps extends {}>(
-    template: TemplateStringsArray,
-    ...styles: Interpolation<ComponentProps & AdditionalProps>[]
-  ): StyledComponent<ComponentProps, JSXProps>
 }
 
 export type StyledTags = {
-  [Tag in keyof JSX.IntrinsicElements]: CreateStyledComponent<{as?: React.ElementType}, JSX.IntrinsicElements[Tag]>
+  [Tag in keyof JSX.IntrinsicElements]: CreateStyledComponent<{}, JSX.IntrinsicElements[Tag]>
 }
 
 interface Styled extends BaseCreateStyled, StyledTags {}

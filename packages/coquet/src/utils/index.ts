@@ -21,19 +21,12 @@ export function addUnitIfNeeded(name: string, value: any): any {
   return String(value).trim()
 }
 
-export function isTag(value: React.ElementType): value is keyof JSX.IntrinsicElements {
-  return typeof value === 'string'
-}
-
-export function getComponentName(value: React.ElementType): string {
-  if (isTag(value)) {
-    return value
-  }
-  return value.displayName || value.name || 'Component'
+export function getDisplayName(value: React.ElementType): string {
+  return typeof value === 'string' ? value : value.displayName || value.name || 'Component'
 }
 
 export function generateDisplayName(value: React.ElementType) {
-  return isTag(value) ? `styled.${value}` : `Styled(${getComponentName(value)})`
+  return typeof value === 'string' ? `styled.${value}` : `Styled(${getDisplayName(value)})`
 }
 
 /**

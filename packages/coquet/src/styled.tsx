@@ -1,9 +1,10 @@
-import {forwardRef} from 'react'
+import {createElement, forwardRef} from 'react'
 import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
+import {cx} from './cx'
 import {StyleClass} from './StyleClass'
 import {Interpolation as OtherInterp} from './types'
-import {cssEscape, generateDisplayName, getComponentName, hash, Item, namedFunction} from './utils'
+import {cssEscape, generateDisplayName, getDisplayName, hash, Item, namedFunction} from './utils'
 
 export type NoInfer<A extends any> = [A][A extends any ? 0 : never]
 
@@ -267,20 +268,36 @@ function generateID(displayName?: string, parentID?: string) {
 
 function createStyledComponent<T extends React.ElementType>(component: T, styles: Item) {
   const displayName = generateDisplayName(component)
-  const componentID = generateID(getComponentName(component))
+  const componentID = generateID(getDisplayName(component))
   const styleClass = new StyleClass(componentID, [styles])
+  const asComponentCache = new Map<React.ElementType, StyledComponent<any, any>>()
 
-  const Component = component as any
   const WrappedStyledComponent = forwardRef<T, React.ComponentPropsWithoutRef<T>>((props, ref) => {
     const groupSheet = useStyleSheet()
     const className = styleClass.inject(groupSheet, props)
-    return <Component {...props} className={`${componentID} ${className}`} ref={ref} />
+
+    const filteredProps = {} as typeof props
+    for (const key in props) {
+      if (key[0] !== '$') {
+        filteredProps[key] = props[key]
+      }
+    }
+
+    return createElement(component, {
+      ...filteredProps,
+      ref,
+      className: cx(props.className, componentID, className),
+    })
   })
 
   const StyledComponent = Object.assign(WrappedStyledComponent, {
     displayName,
     as<T extends React.ElementType>(component: T) {
-      return createStyledComponent(component, styles)
+      const cachedStyledComponent = asComponentCache.get(component)
+      if (cachedStyledComponent) return cachedStyledComponent
+      const styledComponentAs = createStyledComponent(component, styles)
+      asComponentCache.set(component, styledComponentAs)
+      return styledComponentAs
     },
   })
 

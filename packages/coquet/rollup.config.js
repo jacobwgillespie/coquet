@@ -1,9 +1,10 @@
-import ts from 'rollup-plugin-typescript2'
 import commonjs from '@rollup/plugin-commonjs'
 import {nodeResolve} from '@rollup/plugin-node-resolve'
 import externals from 'rollup-plugin-node-externals'
 import dts from 'rollup-plugin-dts'
 import {terser} from 'rollup-plugin-terser'
+import esbuild from 'rollup-plugin-esbuild'
+import {getBabelOutputPlugin} from '@rollup/plugin-babel'
 
 export default [
   {
@@ -13,16 +14,12 @@ export default [
       externals({devDeps: false}),
       nodeResolve(),
       commonjs(),
-      ts({
-        tsconfigOverride: {
-          compilerOptions: {module: 'esnext'},
-        },
-        check: false,
-        typescript: require('typescript'),
-      }),
+      esbuild({minify: true}),
+      getBabelOutputPlugin({presets: ['@babel/preset-env']}),
       terser(),
     ],
   },
+
   {
     input: './src/index.ts',
     output: {file: 'dist/index.d.ts', format: 'es'},

@@ -1,28 +1,5 @@
-import {compile, Element, middleware, Middleware, prefixer, RULESET, rulesheet, serialize, stringify} from 'stylis'
+import {compile, middleware, Middleware, prefixer, RULESET, rulesheet, serialize, stringify} from 'stylis'
 import {hash} from '.'
-
-function cloneElement(element: Element, withChildren = true): Element {
-  const clonedElement = {...element}
-
-  if (typeof element.props === 'object') {
-    clonedElement.props = [...element.props]
-  }
-
-  if (withChildren && typeof element.children === 'object') {
-    clonedElement.children = element.children.flatMap((child: Element) => {
-      const clonedChildren = atomize(child)
-      clonedChildren.forEach((child) => (child.root = clonedElement))
-      return clonedChildren
-    })
-  }
-  return clonedElement
-}
-
-function atomize(element: Element): Element[] {
-  if (element.type !== RULESET) return [cloneElement(element)]
-  if (!Array.isArray(element.children)) return [cloneElement(element)]
-  return element.children.map((child) => cloneElement({...element, children: [child]}))
-}
 
 export function createCompiler() {
   function compileCSS(css: string, selector = '', prefix = '', _id = '&') {
@@ -71,27 +48,6 @@ export function compileCSS(css: string) {
   const rules: CompiledRule[] = []
   serialize(
     compiled,
-    middleware([
-      prefixer,
-      selfReferenceReplacementPlugin,
-      stringify,
-      rulesheet((rule) => {
-        const className = `c-${hash(rule)}`
-        rules.push({className, rule: rule.replace(PLACEHOLDER_REGEXP, className)})
-      }),
-    ]),
-  )
-  return rules
-}
-
-export function compileAtomic(css: string): CompiledRule[] {
-  const compiled = compile(`.${PLACEHOLDER_CLASSNAME} { ${css.replace(COMMENT_REGEX, '')} }`)
-
-  const atomized = compiled.flatMap((el) => atomize(el))
-
-  const rules: CompiledRule[] = []
-  serialize(
-    atomized,
     middleware([
       prefixer,
       selfReferenceReplacementPlugin,

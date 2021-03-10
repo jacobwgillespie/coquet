@@ -1,4 +1,4 @@
-import {StyleSheet} from './StyleSheet'
+import {StyleSheet} from './types'
 
 // TODO: should this be a global?
 const idToGroupNumber = new Map<string, number>()

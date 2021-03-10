@@ -1,8 +1,4 @@
-export interface StyleSheet {
-  insertRule(index: number, rule: string): boolean
-  getRule(index: number): string
-  deleteRule(index: number): void
-}
+import {StyleSheet} from './types'
 
 export class DOMStyleSheet implements StyleSheet {
   element = makeStyleElement()

@@ -2,10 +2,10 @@ import {createElement, forwardRef} from 'react'
 import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
 import {cx} from './cx'
-import {StyleClass} from './StyleClass'
+import {StyleClass} from './internal/StyleClass'
+import {cssEscape, generateDisplayName, getDisplayName, hash, Item, namedFunction} from './internal/utils'
+import {elements} from './internal/utils/elements'
 import {Interpolation as OtherInterp} from './types'
-import {cssEscape, generateDisplayName, getDisplayName, hash, Item, namedFunction} from './utils'
-import {elements} from './utils/elements'
 
 export type NoInfer<A extends any> = [A][A extends any ? 0 : never]
 

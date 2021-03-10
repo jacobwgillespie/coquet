@@ -1,8 +1,8 @@
 import {memo, useEffect} from 'react'
 import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
-import {flatten, hash} from './utils'
-import {createCompiler} from './utils/compiler'
+import {flatten, hash} from './internal/utils'
+import {createCompiler} from './internal/utils/compiler'
 
 const stylis = createCompiler()
 

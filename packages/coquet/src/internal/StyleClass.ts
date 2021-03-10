@@ -1,4 +1,4 @@
-import {GroupStyleSheet} from './sheet/groups'
+import {StyleManager} from './StyleManager'
 import {flatten, hash, Item} from './utils'
 import {compileCSS} from './utils/compiler'
 
@@ -19,7 +19,7 @@ export class StyleClass {
     this.baseStyle = baseStyle
   }
 
-  inject(sheet: GroupStyleSheet, ctx: object): string {
+  inject(sheet: StyleManager, ctx: object): string {
     const classNames: string[] = []
 
     if (this.baseStyle) {
@@ -46,7 +46,7 @@ export class StyleClass {
     return Object.assign(classNames.join(' '), {[StyleClassSymbol]: true})
   }
 
-  clear(sheet: GroupStyleSheet) {
+  clear(sheet: StyleManager) {
     sheet.deleteGroupRules(this.componentID)
   }
 }

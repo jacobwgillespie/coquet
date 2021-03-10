@@ -1,6 +1,6 @@
 import {typeOf} from 'react-is'
-import {GroupStyleSheet} from '../sheet/groups'
-import {Interpolation} from '../types'
+import {Interpolation} from '../../types'
+import {StyleManager} from '../StyleManager'
 import {unitless} from './unitless'
 
 export {hash} from './hash'
@@ -108,7 +108,7 @@ export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): Int
 
 export type Item = string | number | Function | object | Item[]
 
-export function flatten(item: Item, sheet?: GroupStyleSheet, ctx?: object): Interpolation {
+export function flatten(item: Item, sheet?: StyleManager, ctx?: object): Interpolation {
   if (Array.isArray(item)) {
     const rules: Interpolation[] = []
     for (const i of item) {

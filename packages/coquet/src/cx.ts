@@ -1,4 +1,4 @@
-import {isClassName} from './StyleClass'
+import {isClassName} from './internal/StyleClass'
 
 export type ClassValue = string | undefined | null | false | void | 0 | {[id: string]: ClassValue} | ClassValue[]
 

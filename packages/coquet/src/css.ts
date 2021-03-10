@@ -1,5 +1,5 @@
+import {flatten, isFunction, isPlainObject} from './internal/utils'
 import {Interpolation, Styles} from './types'
-import {flatten, isFunction, isPlainObject} from './utils'
 
 function interleave(strings: string[], interpolations: Interpolation[]): Interpolation[] {
   const result: Interpolation[] = [strings[0]]

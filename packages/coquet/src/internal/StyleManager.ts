@@ -1,4 +1,4 @@
-import {StyleSheet} from './styleSheet'
+import {StyleSheet} from './StyleSheet'
 
 // TODO: should this be a global?
 const idToGroupNumber = new Map<string, number>()
@@ -24,7 +24,7 @@ function getGroupNumber(id: string): number {
 //   return groupNumberToID.get(number)
 // }
 
-export class GroupStyleSheet {
+export class StyleManager {
   sizes = new Uint32Array(512)
   length = 512
   sheet: StyleSheet

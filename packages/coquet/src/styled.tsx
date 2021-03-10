@@ -1,42 +1,11 @@
 import {createElement, forwardRef} from 'react'
-import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
 import {cx} from './cx'
 import {StyleClass} from './internal/StyleClass'
-import {cssEscape, generateDisplayName, getDisplayName, hash, Item, namedFunction} from './internal/utils'
+import {cssEscape, generateDisplayName, getDisplayName, hash, namedFunction} from './internal/utils'
 import {elements} from './internal/utils/elements'
-import {Interpolation as OtherInterp} from './types'
-
-export type NoInfer<A extends any> = [A][A extends any ? 0 : never]
-
-type Interpolation<Props> =
-  | string
-  | false
-  | ((props: NoInfer<Props>) => Interpolation<Props>)
-  | StyledComponentInterpolation
-  | Interpolation<Props>[]
-  | OtherInterp[]
-
-type StyledComponentInterpolation =
-  | Pick<StyledComponent<any, any>, keyof StyledComponent<any, any>>
-  | Pick<StyledComponent<any>, keyof StyledComponent<any, any>>
-
-export type PropsOf<
-  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
-> = JSX.LibraryManagedAttributes<C, React.ComponentProps<C>>
-
-export interface StyledComponent<ComponentProps extends {}, JSXProps extends {} = {}>
-  extends React.FC<ComponentProps & JSXProps> {
-  as<Component extends React.ComponentClass<React.ComponentProps<Component>>>(
-    component: Component,
-  ): StyledComponent<PropsOf<Component>, {ref?: React.Ref<InstanceType<Component>>}>
-
-  as<Component extends React.ComponentType<React.ComponentProps<Component>>>(
-    component: Component,
-  ): StyledComponent<PropsOf<Component>>
-
-  as<Tag extends keyof JSX.IntrinsicElements>(tag: Tag): StyledComponent<JSX.IntrinsicElements[Tag]>
-}
+import {useStyleManager} from './StyleProvider'
+import {Interpolation, PropsOf, StyledComponent} from './types'
 
 interface BaseCreateStyled {
   <C extends React.ComponentClass<React.ComponentProps<C>>>(component: C): CreateStyledComponent<
@@ -92,15 +61,15 @@ function generateID(displayName?: string, parentID?: string) {
   return parentID ? `${parentID}-${id}` : `coquet-${id}`
 }
 
-function createStyledComponent<T extends React.ElementType>(component: T, styles: Item) {
+function createStyledComponent<T extends React.ElementType>(component: T, styles: Interpolation<any>) {
   const displayName = generateDisplayName(component)
   const componentID = generateID(getDisplayName(component))
   const styleClass = new StyleClass(componentID, [styles])
   const asComponentCache = new Map<React.ElementType, StyledComponent<any, any>>()
 
   const WrappedStyledComponent = forwardRef<T, React.ComponentPropsWithoutRef<T>>((props, ref) => {
-    const groupSheet = useStyleSheet()
-    const className = styleClass.inject(groupSheet, props)
+    const styleManager = useStyleManager()
+    const className = styleClass.inject(styleManager, props)
 
     const filteredProps = {} as typeof props
     for (const key in props) {

@@ -12,7 +12,7 @@ export function hash(string: string) {
  * @param {number} seed Positive integer only
  * @return {number} 32-bit positive integer hash
  */
-export function murmurhashv3(input: string, seed: number = 0): number {
+function murmurhashv3(input: string, seed: number = 0): number {
   const key = new TextEncoder().encode(input)
 
   let remainder, bytes, h1, h1b, c1, c2, k1, i

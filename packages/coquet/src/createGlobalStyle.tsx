@@ -1,14 +1,11 @@
 import {memo, useEffect} from 'react'
-import {useStyleSheet} from './CoquetProvider'
 import {css} from './css'
 import {flatten, hash} from './internal/utils'
 import {createCompiler} from './internal/utils/compiler'
+import {useStyleManager} from './StyleProvider'
+import {Interpolation} from './types'
 
 const stylis = createCompiler()
-
-type NoInfer<A extends any> = [A][A extends any ? 0 : never]
-
-type Interpolation<Props> = string | false | ((props: NoInfer<Props>) => Interpolation<Props>) | Interpolation<Props>[]
 
 export function createGlobalStyle<Props extends {} = {}>(
   styles: TemplateStringsArray,
@@ -19,13 +16,13 @@ export function createGlobalStyle<Props extends {} = {}>(
   const id = `coquet-global-${hash(JSON.stringify(rules))}`
 
   const GlobalStyle: React.FC = (props) => {
-    const groupSheet = useStyleSheet()
+    const styleManager = useStyleManager()
     useEffect(() => {
-      const style = flatten(rules, groupSheet, props)
+      const style = flatten(rules, styleManager, props)
       const flatCSS = `${Array.isArray(style) ? style.join('') : style}`
       const compiledCSS = stylis.compile(flatCSS)
-      groupSheet.insertRules(id, id, compiledCSS)
-      return () => groupSheet.clearRules(id)
+      styleManager.insertRules(id, id, compiledCSS)
+      return () => styleManager.clearRules(id)
     }, [])
 
     return null

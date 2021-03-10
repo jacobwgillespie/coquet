@@ -86,8 +86,8 @@ export function isStyledComponent(value: unknown) {
   return value && typeof (value as any).coquetComponentID === 'string'
 }
 
-export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): Interpolation {
-  const rules: Interpolation[] = []
+export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): Interpolation<any> {
+  const rules: Interpolation<any>[] = []
 
   for (const key in obj) {
     const value = obj[key]
@@ -106,11 +106,9 @@ export function objectToCSS(obj: Record<string, unknown>, prevKey?: string): Int
   return prevKey ? [`${prevKey} {`, ...rules, '}'] : rules
 }
 
-export type Item = string | number | Function | object | Item[]
-
-export function flatten(item: Item, sheet?: StyleManager, ctx?: object): Interpolation {
+export function flatten(item: Interpolation<any>, sheet?: StyleManager, ctx?: object): Interpolation<any> {
   if (Array.isArray(item)) {
-    const rules: Interpolation[] = []
+    const rules: Interpolation<any>[] = []
     for (const i of item) {
       const result = flatten(i, sheet, ctx)
       if (result === '') continue

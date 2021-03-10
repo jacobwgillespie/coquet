@@ -1,5 +1,6 @@
+import {Interpolation} from '../types'
 import {StyleManager} from './StyleManager'
-import {flatten, hash, Item} from './utils'
+import {flatten, hash} from './utils'
 import {compileCSS} from './utils/compiler'
 
 const StyleClassSymbol = Symbol('CoquetClassName')
@@ -8,18 +9,18 @@ export function isClassName(name: unknown): name is string {
   return Boolean((name as any)[StyleClassSymbol])
 }
 
-export class StyleClass {
+export class StyleClass<Props extends {}> {
   componentID: string
-  rules: Item[]
-  baseStyle?: StyleClass
+  rules: Interpolation<Props>[]
+  baseStyle?: StyleClass<any>
 
-  constructor(componentID: string, rules: Item[], baseStyle?: StyleClass) {
+  constructor(componentID: string, rules: Interpolation<Props>[], baseStyle?: StyleClass<any>) {
     this.componentID = componentID
     this.rules = rules
     this.baseStyle = baseStyle
   }
 
-  inject(sheet: StyleManager, ctx: object): string {
+  inject(sheet: StyleManager, ctx: Props): string {
     const classNames: string[] = []
 
     if (this.baseStyle) {
